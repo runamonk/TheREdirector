@@ -19,6 +19,11 @@ internal sealed class Settings
     public int AskAfterCloses { get; set; } = 3;
     public int AskWithinMinutes { get; set; } = 2;
 
+    // Checks GitHub on startup, at most once every this many days (0 is every start).
+    public bool CheckForUpdates { get; set; } = true;
+    public int UpdateEveryDays { get; set; }
+    public DateTime? LastUpdateCheckUtc { get; set; }
+
     public static Settings Read()
     {
         try { return JsonSerializer.Deserialize<Settings>(File.ReadAllText(FilePath)) ?? new(); }

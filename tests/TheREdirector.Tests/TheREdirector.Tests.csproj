@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TheREdirector.Core\TheREdirector.Core.csproj" />
     <ProjectReference Include="..\..\src\TheREdirector\TheREdirector.csproj" />
   </ItemGroup>
 

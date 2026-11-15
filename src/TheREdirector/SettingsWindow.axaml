@@ -16,6 +16,14 @@
             <NumericUpDown x:Name="AskWithinMinutes" Minimum="1" Maximum="60" Increment="1" FormatString="0" Width="110" />
             <TextBlock VerticalAlignment="Center" Text="minutes" />
         </StackPanel>
+        <Separator Margin="0,4" />
+        <CheckBox x:Name="CheckForUpdates" Content="Check for updates when The Redirector starts" />
+        <StackPanel Orientation="Horizontal" Spacing="8" Margin="28,0,0,0" IsEnabled="{Binding #CheckForUpdates.IsChecked}">
+            <TextBlock VerticalAlignment="Center" Text="Only once every" />
+            <NumericUpDown x:Name="UpdateEveryDays" Minimum="0" Maximum="365" Increment="1" FormatString="0" Width="110" />
+            <TextBlock VerticalAlignment="Center" Opacity="0.7" Text="days (0 checks every time)" />
+        </StackPanel>
+        <TextBlock x:Name="VersionText" TextWrapping="Wrap" Opacity="0.7" />
         <Button Content="Close" HorizontalAlignment="Right" Click="CloseClicked" />
     </StackPanel>
 </Window>

@@ -32,7 +32,7 @@ public partial class App : Application
         {
             // No windows; the tray icon is the whole app.
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            BuildTray(desktop);
+            BuildTray();
             watcher.Redirected += (url, closed) => Dispatcher.UIThread.Post(() =>
             {
                 lastRedirect = (closed ? "Last: " : "Last (Edge also opened it): ") + url;
@@ -40,12 +40,13 @@ public partial class App : Application
             });
             watcher.AskAboutEdge += () => Dispatcher.UIThread.Post(AskAboutEdge);
             SetEnabled(settings.Enabled);
+            InitializeUpdates();
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void BuildTray(IClassicDesktopStyleApplicationLifetime desktop)
+    private void BuildTray()
     {
         enabledItem = new NativeMenuItem("Redirect Edge links") { ToggleType = MenuItemToggleType.CheckBox };
         enabledItem.Click += (_, _) => SetEnabled(!watcher.IsRunning);
@@ -80,21 +81,27 @@ public partial class App : Application
             if (File.Exists(Log.FilePath)) Process.Start(new ProcessStartInfo(Log.FilePath) { UseShellExecute = true });
         };
 
+        var updateItem = new NativeMenuItem("Check for updates");
+        updateItem.Click += (_, _) => CheckForUpdates_Click();
+
         var exitItem = new NativeMenuItem("Exit");
-        exitItem.Click += (_, _) =>
-        {
-            watcher.Dispose();
-            tray.Dispose();
-            desktop.Shutdown();
-        };
+        exitItem.Click += (_, _) => Quit();
 
         tray = new TrayIcon
         {
-            Menu = new NativeMenu { enabledItem, startupItem, settingsItem, new NativeMenuItemSeparator(), logItem, new NativeMenuItemSeparator(), exitItem },
+            Menu = new NativeMenu { enabledItem, startupItem, settingsItem, new NativeMenuItemSeparator(), logItem, updateItem, new NativeMenuItemSeparator(), exitItem },
         };
         // Left click flips it on and off.
         tray.Clicked += (_, _) => SetEnabled(!watcher.IsRunning);
         TrayIcon.SetIcons(this, [tray]);
+    }
+
+    private void Quit()
+    {
+        watcher.Dispose();
+        tray.Dispose();
+        StartUpdater();
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop) desktop.Shutdown();
     }
 
     private void AskAboutEdge()

@@ -22,4 +22,8 @@
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.3" />
     <PackageReference Include="System.Management" Version="10.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheREdirector.Core\TheREdirector.Core.csproj" />
+  </ItemGroup>
 </Project>
