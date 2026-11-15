@@ -1,0 +1,21 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="TheREdirector.SettingsWindow"
+        Title="The Redirector settings"
+        Icon="avares://TheREdirector/Assets/TheREdirector.ico"
+        Width="520" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="20" Spacing="12">
+        <CheckBox x:Name="CloseEdge" Content="Close Edge when it starts without a link" />
+        <TextBlock TextWrapping="Wrap" Opacity="0.7"
+                   Text="An Edge that's already running grabs links before they can be redirected, so keeping it closed is what makes redirecting reliable." />
+        <StackPanel Orientation="Horizontal" Spacing="8" IsEnabled="{Binding #CloseEdge.IsChecked}">
+            <TextBlock VerticalAlignment="Center" Text="Ask after" />
+            <NumericUpDown x:Name="AskAfterCloses" Minimum="1" Maximum="50" Increment="1" FormatString="0" Width="110" />
+            <TextBlock VerticalAlignment="Center" Text="closes within" />
+            <NumericUpDown x:Name="AskWithinMinutes" Minimum="1" Maximum="60" Increment="1" FormatString="0" Width="110" />
+            <TextBlock VerticalAlignment="Center" Text="minutes" />
+        </StackPanel>
+        <Button Content="Close" HorizontalAlignment="Right" Click="CloseClicked" />
+    </StackPanel>
+</Window>
